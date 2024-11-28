@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "Cherry.h"
+#include "ServoController.h"
 
 DoubleServo::DoubleServo(uint8_t iPin1, uint8_t iPin2, int iFrom1 = 0, int iTo1 = 90, int iFrom2 = 0, int iTo2 = 90)
 {

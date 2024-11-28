@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "Cherry.h"
+#include "ServoController.h"
 
 Vacuum::Vacuum(uint8_t iMotorPin, SingleServo iServo, bool iReversed = false)
 {

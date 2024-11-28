@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "Cherry.h"
+#include "ServoController.h"
 
 SingleServo::SingleServo(uint8_t iPin, int iFrom = 0, int iTo = 90)
 {
