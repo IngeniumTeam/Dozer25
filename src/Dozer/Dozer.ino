@@ -23,7 +23,7 @@
 
 // Relais
 #define RELAIS_1 29
-#define RELAIS_1 30
+#define RELAIS_2 30
 
 // Motors
 //// 1
@@ -97,8 +97,11 @@ LedRGB bluetoothLed(RGBA_1, RGBB_1, RGBC_1, true);
 LedRGB led2(RGBA_2, RGBB_2, RGBC_2, true);
 Digit digit(DIGITB, DIGITA, 7);
 
+Motor motor(DIR, RELAIS_2, 0, STEP, 0, 5, 0, 255);
+
 SingleServo rackServo(SERVO_3, 50, 8);
-//SingleServo otherServo(SERVO_4, 30, 110); // Uncomment this line when using another servo motor // BANDEROLE //
+SingleServo bandServo1(SERVO_1, 30, 110);
+SingleServo bandServo2(SERVO_2, 30, 110);
 
 int estimation = 60;
 int speedStatus = 0;
@@ -144,6 +147,16 @@ void loop() {
   int start = millis();
 #endif
   //report.print();
+  if (digitalRead(LMTS_1)) {
+    motor.backward(1);
+    while(digitalRead(LMTS_1));
+    motor.stop();
+  }
+  if (digitalRead(LMTS_2)) {
+    motor.forward(1);
+    while(digitalRead(LMTS_2));
+    motor.stop();
+  }
   switch (bluetooth.receive()) {
     case 0:
       report.ok++;
@@ -228,13 +241,13 @@ void loop() {
 #endif
           switch (key) {
             case 1:
-              rackServo.open();
-              // Insert here commands for the relay to make the rack go up or down
+              motor.forward(5);
               break;
             case 2:
+              motor.stop();
               break;
             case 3:
-              rackServo.close();
+              motor.backward(5);
               // Insert here commands for the relay to make the rack go up or down
               break;
             case 4:
