@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <Bluetooth.h>
 #include <Mecanum.h>
 #include <Report.h>
@@ -131,9 +132,21 @@ void setup() {
     Serial.println("Estimation is on.");
 #endif
     rackServo.setup();
+    bandServo1.setup();
+    bandServo2.setup();
     rackServo.open();
+    bandServo1.close();
+    bandServo2.close();
+    pinMode(RELAIS_1, OUTPUT);
+    digitalWrite(RELAIS_1, HIGH);
 #if DEBUG
-    Serial.println("Servo is on and open.");
+    Serial.println("Servos and magnets are on and set.");
+#endif
+    motor.backward(1);
+    while(digitalRead(LMTS_1));
+    motor.brake();
+#if DEBUG
+    Serial.println("Rack is on and down.");
 #endif
     stop();
 #if DEBUG
@@ -150,12 +163,12 @@ void loop() {
   if (digitalRead(LMTS_1)) {
     motor.backward(1);
     while(digitalRead(LMTS_1));
-    motor.stop();
+    motor.brake();
   }
   if (digitalRead(LMTS_2)) {
     motor.forward(1);
     while(digitalRead(LMTS_2));
-    motor.stop();
+    motor.brake();
   }
   switch (bluetooth.receive()) {
     case 0:
@@ -244,17 +257,19 @@ void loop() {
               motor.forward(5);
               break;
             case 2:
-              motor.stop();
+              motor.brake();
               break;
             case 3:
               motor.backward(5);
-              // Insert here commands for the relay to make the rack go up or down
               break;
             case 4:
+              bandServo1.open();
               break;
             case 5:
+              digitalWrite(RELAIS_1, LOW);
               break;
             case 6:
+              bandServo2.open();
               break;
             case 7:
               break;
