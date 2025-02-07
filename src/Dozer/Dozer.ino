@@ -142,8 +142,10 @@ void setup() {
 #if DEBUG
     Serial.println("Servos and magnets are on and set.");
 #endif
-    motor.backward(1);
-    while(digitalRead(LMTS_1));
+    motor.backward(5);
+    while (!digitalRead(LMTS_2));
+    motor.forward(1);
+    while(digitalRead(LMTS_2));
     motor.brake();
 #if DEBUG
     Serial.println("Rack is on and down.");
@@ -272,6 +274,7 @@ void loop() {
               bandServo2.open();
               break;
             case 7:
+              digitalWrite(RELAIS_1, HIGH);
               break;
             case 8:
               break;
