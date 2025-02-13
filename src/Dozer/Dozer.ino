@@ -101,12 +101,13 @@ Digit digit(DIGITB, DIGITA, 7);
 Motor motor(DIR, RELAIS_2, 0, STEP, 0, 5, 0, 255);
 
 SingleServo rackServo(SERVO_3, 50, 8);
-SingleServo bandServo1(SERVO_1, 30, 110);
-SingleServo bandServo2(SERVO_2, 30, 110);
+// SingleServo bandServo1(SERVO_1, 30, 110);
+// SingleServo bandServo2(SERVO_2, 30, 110);
 
 int estimation = 60;
 int speedStatus = 0;
 int key = 0;
+bool startToOpen = false;
 
 void setup() {
   // Serial setup //
@@ -132,11 +133,11 @@ void setup() {
     Serial.println("Estimation is on.");
 #endif
     rackServo.setup();
-    bandServo1.setup();
-    bandServo2.setup();
+    // bandServo1.setup();
+    // bandServo2.setup();
     rackServo.open();
-    bandServo1.close();
-    bandServo2.close();
+    // bandServo1.close();
+    // bandServo2.close();
     pinMode(RELAIS_1, OUTPUT);
     digitalWrite(RELAIS_1, HIGH);
 #if DEBUG
@@ -237,6 +238,12 @@ void loop() {
 #endif
           mecanum.diagonal(bluetooth.message.get(JOYSTICK_RIGHT_X) - 255, bluetooth.message.get(JOYSTICK_RIGHT_Y) - 255);
         }*/
+        if (startToOpen) {
+          if (bluetooth.message.get(JOYSTICK_RIGHT_X) != 255 || bluetooth.message.get(JOYSTICK_LEFT_X) != 255) {
+            startToOpen = false;
+            digitalWrite(RELAIS_1, LOW);
+          }
+        }
       }
       // Brake //
       {
@@ -265,13 +272,14 @@ void loop() {
               motor.backward(5);
               break;
             case 4:
-              bandServo1.open();
+              startToOpen = true;
               break;
             case 5:
               digitalWrite(RELAIS_1, LOW);
               break;
             case 6:
-              bandServo2.open();
+              startToOpen = false;
+              // bandServo2.open();
               break;
             case 7:
               digitalWrite(RELAIS_1, HIGH);
@@ -316,4 +324,6 @@ void stop() {
   Serial.print("stop | ");
 #endif
   mecanum.stop();
+  motor.brake();
+  digitalWrite(RELAIS_1, LOW);
 }
