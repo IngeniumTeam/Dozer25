@@ -101,8 +101,6 @@ Digit digit(DIGITB, DIGITA, 7);
 Motor motor(DIR, RELAIS_2, 0, STEP, 0, 5, 0, 255);
 
 SingleServo rackServo(SERVO_3, 50, 8);
-// SingleServo bandServo1(SERVO_1, 30, 110);
-// SingleServo bandServo2(SERVO_2, 30, 110);
 
 int estimation = 60;
 int speedStatus = 0;
@@ -117,8 +115,8 @@ void setup() {
     Serial.println("Serial communication is on.");
     Serial.println("Bluetooth communication is on.");
 #endif
-#if DEBUG
     Serial.begin(9600);
+#if DEBUG
     Serial.println("Serial communication is on.");
 #endif
     Serial1.begin(9600);
@@ -133,11 +131,7 @@ void setup() {
     Serial.println("Estimation is on.");
 #endif
     rackServo.setup();
-    // bandServo1.setup();
-    // bandServo2.setup();
     rackServo.open();
-    // bandServo1.close();
-    // bandServo2.close();
     pinMode(RELAIS_1, OUTPUT);
     digitalWrite(RELAIS_1, HIGH);
 #if DEBUG
@@ -239,7 +233,7 @@ void loop() {
           mecanum.diagonal(bluetooth.message.get(JOYSTICK_RIGHT_X) - 255, bluetooth.message.get(JOYSTICK_RIGHT_Y) - 255);
         }*/
         if (startToOpen) {
-          if (bluetooth.message.get(JOYSTICK_RIGHT_X) != 255 || bluetooth.message.get(JOYSTICK_LEFT_X) != 255) {
+          if (bluetooth.message.get(JOYSTICK_RIGHT_Y) != 255 || bluetooth.message.get(JOYSTICK_LEFT_Y) != 255) {
             startToOpen = false;
             digitalWrite(RELAIS_1, LOW);
           }
@@ -275,11 +269,12 @@ void loop() {
               startToOpen = true;
               break;
             case 5:
-              digitalWrite(RELAIS_1, LOW);
+              startToOpen = false;
               break;
             case 6:
-              startToOpen = false;
-              // bandServo2.open();
+              motor.backward(1);
+              delay(400);
+              motor.brake();
               break;
             case 7:
               digitalWrite(RELAIS_1, HIGH);
@@ -287,6 +282,7 @@ void loop() {
             case 8:
               break;
             case 9:
+              digitalWrite(RELAIS_1, LOW);
               break;
             case 10:
               break;
@@ -324,6 +320,6 @@ void stop() {
   Serial.print("stop | ");
 #endif
   mecanum.stop();
-  motor.brake();
-  digitalWrite(RELAIS_1, LOW);
+  //motor.brake();
+  //digitalWrite(RELAIS_1, LOW);
 }
