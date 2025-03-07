@@ -225,7 +225,7 @@ void loop() {
 #endif
         left.move(constrain((-(bluetooth.message.get(JOYSTICK_RIGHT_X) - 255) + (bluetooth.message.get(JOYSTICK_LEFT_X) - 255)), -255, 255));
         right.move(constrain((-(bluetooth.message.get(JOYSTICK_RIGHT_X) - 255) - (bluetooth.message.get(JOYSTICK_LEFT_X) - 255)), -255, 255));
-        mecanum.sideway(constrain(bluetooth.message.get(JOYSTICK_RIGHT_Y) - 255, -255, 255));
+        mecanum.sideway(constrain(bluetooth.message.get(JOYSTICK_RIGHT_Y) - 255, -255, 255), bluetooth.message.get(JOYSTICK_LEFT_X) - 255);
         /*if (abs(bluetooth.message.get(JOYSTICK_RIGHT_X) - 255) > DIAGONAL_THRESHOLD && abs(bluetooth.message.get(JOYSTICK_RIGHT_Y) - 255) > DIAGONAL_THRESHOLD) {
 #if DEBUG
           Serial.print("diagonal: "); Serial.print(bluetooth.message.get(JOYSTICK_RIGHT_X) - 255); Serial.print(", "); Serial.print(bluetooth.message.get(JOYSTICK_RIGHT_Y) - 255); Serial.print(" | ");

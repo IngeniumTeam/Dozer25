@@ -19,7 +19,7 @@ public:
 	void move(int speed);
 	void stop();
 	void brake();
-	void sideway(int speed);
+	void sideway(int speed, int turn);
 	void sidewayLeft(int speed);
 	void sidewayRight(int speed);
 	void diagonal(int xSpeed, int ySpeed);
