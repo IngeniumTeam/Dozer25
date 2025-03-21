@@ -62,14 +62,14 @@ void Mecanum::brake()
 void Mecanum::sideway(int speed, int turn)
 {
     if (speed > 0)
-        sidewayRight(constrain(speed - turn, 0, 255));
+        sidewayRight(speed, 0, 255));
     if (speed < 0)
-        sidewayLeft(constrain(turn - speed, 0, 255));
+        sidewayLeft(-speed, turn);
 }
 
-void Mecanum::sidewayLeft(int speed)
+void Mecanum::sidewayLeft(int speed, int turn)
 {
-    motors[Left][Front].backward(speed);
+    motors[Left][Front].backward(speed - turn);
     motors[Left][Back].forward(speed);
     motors[Right][Front].forward(speed);
     motors[Right][Back].backward(speed);
