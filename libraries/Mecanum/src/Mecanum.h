@@ -20,8 +20,8 @@ public:
 	void stop();
 	void brake();
 	void sideway(int speed, int turn);
-	void sidewayLeft(int speed);
-	void sidewayRight(int speed);
+	void sidewayLeft(int speed, int turn);
+	void sidewayRight(int speed, int turn);
 	void diagonal(int xSpeed, int ySpeed);
 	void diagonalLeft(int speed);
 	void diagonalLeftForward(int speed);
