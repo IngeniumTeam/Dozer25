@@ -133,7 +133,7 @@ void setup() {
     rackServo.setup();
     rackServo.open();
     pinMode(RELAIS_1, OUTPUT);
-    digitalWrite(RELAIS_1, HIGH);
+    digitalWrite(RELAIS_1, LOW);
 #if DEBUG
     Serial.println("Servos and magnets are on and set.");
 #endif
@@ -257,24 +257,26 @@ void loop() {
 #endif
           switch (key) {
             case 1:
-              motor.forward(5);
+              motor.backward(5);
               break;
             case 2:
               motor.brake();
               break;
             case 3:
-              motor.backward(5);
+              motor.forward(5);
               break;
             case 4:
-              startToOpen = true;
-              break;
-            case 5:
-              startToOpen = false;
-              break;
-            case 6:
               motor.backward(1);
               delay(400);
               motor.brake();
+              break;
+            case 5:
+              startToOpen = false;
+              digitalWrite(RELAIS_1, LOW);
+              break;
+            case 6:
+              startToOpen = true;
+              digitalWrite(RELAIS_1, HIGH);
               break;
             case 7:
               digitalWrite(RELAIS_1, HIGH);
