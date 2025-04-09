@@ -106,6 +106,7 @@ int estimation = 60;
 int speedStatus = 0;
 int key = 0;
 bool startToOpen = false;
+int correction = 10; // 0 = no correction ; +1 = right ; -1 = left
 
 void setup() {
   // Serial setup //
@@ -223,8 +224,8 @@ void loop() {
         Serial.print("right: "); Serial.print(constrain((-(bluetooth.message.get(JOYSTICK_RIGHT_X) - 255) - (bluetooth.message.get(JOYSTICK_LEFT_X) - 255)), -255, 255)); Serial.print(" | ");
         Serial.print("sideway: "); Serial.print(constrain(bluetooth.message.get(JOYSTICK_RIGHT_Y) - 255, -255, 255)); Serial.print(" | ");
 #endif
-        left.move(constrain((-(bluetooth.message.get(JOYSTICK_RIGHT_X) - 255) + (bluetooth.message.get(JOYSTICK_LEFT_X) - 255)), -255, 255));
-        right.move(constrain((-(bluetooth.message.get(JOYSTICK_RIGHT_X) - 255) - (bluetooth.message.get(JOYSTICK_LEFT_X) - 255)), -255, 255));
+        left.move(constrain((-(bluetooth.message.get(JOYSTICK_RIGHT_X) - 255) + (bluetooth.message.get(JOYSTICK_LEFT_X) - 255)) - correction, -255, 255));
+        right.move(constrain((-(bluetooth.message.get(JOYSTICK_RIGHT_X) - 255) - (bluetooth.message.get(JOYSTICK_LEFT_X) - 255)) + correction, -255, 255));
         mecanum.sideway(constrain(bluetooth.message.get(JOYSTICK_RIGHT_Y) - 255, -255, 255), bluetooth.message.get(JOYSTICK_LEFT_X) - 255);
         /*if (abs(bluetooth.message.get(JOYSTICK_RIGHT_X) - 255) > DIAGONAL_THRESHOLD && abs(bluetooth.message.get(JOYSTICK_RIGHT_Y) - 255) > DIAGONAL_THRESHOLD) {
 #if DEBUG
@@ -279,12 +280,13 @@ void loop() {
               digitalWrite(RELAIS_1, HIGH);
               break;
             case 7:
-              digitalWrite(RELAIS_1, HIGH);
+              correction--;
               break;
             case 8:
+              correction = 0;
               break;
             case 9:
-              digitalWrite(RELAIS_1, LOW);
+              correction++;
               break;
             case 10:
               break;
