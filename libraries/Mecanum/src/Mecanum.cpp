@@ -69,10 +69,10 @@ void Mecanum::sideway(int speed, int turn)
 
 void Mecanum::sidewayLeft(int speed, int turn)
 {
-    motors[Left][Front].backward(constrain(speed + turn, 0, 255));
-    motors[Left][Back].forward(constrain(speed - turn, 0, 255));
-    motors[Right][Front].forward(constrain(speed + turn, 0, 255));
-    motors[Right][Back].backward(constrain(speed - turn, 0, 255));
+    motors[Left][Front].backward(constrain(speed - turn, 0, 255));
+    motors[Left][Back].forward(constrain(speed + turn, 0, 255));
+    motors[Right][Front].forward(constrain(speed - turn, 0, 255));
+    motors[Right][Back].backward(constrain(speed + turn, 0, 255));
 }
 
 void Mecanum::sidewayRight(int speed, int turn)
