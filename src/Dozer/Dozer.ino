@@ -106,7 +106,7 @@ int estimation = 60;
 int speedStatus = 0;
 int key = 0;
 bool startToOpen = false;
-int correction = 10; // 0 = no correction ; +1 = right ; -1 = left
+int correction = 0; // 0 = no correction ; +1 = right ; -1 = left
 
 void setup() {
   // Serial setup //
