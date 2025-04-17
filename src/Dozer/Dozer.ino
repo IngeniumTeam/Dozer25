@@ -135,6 +135,8 @@ void setup() {
     rackServo.open();
     pinMode(RELAIS_1, OUTPUT);
     digitalWrite(RELAIS_1, LOW);
+    pinMode(SERVO_4, OUTPUT);
+    digitalWrite(SERVO_4, HIGH);
 #if DEBUG
     Serial.println("Servos and magnets are on and set.");
 #endif
@@ -289,8 +291,10 @@ void loop() {
               correction++;
               break;
             case 10:
+              digitalWrite(SERVO_4, HIGH);
               break;
             case 11:
+              digitalWrite(SERVO_4, LOW);
               stop();
               break;
           }
