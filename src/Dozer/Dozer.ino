@@ -106,7 +106,7 @@ int estimation = 60;
 int speedStatus = 0;
 int key = 0;
 bool startToOpen = false;
-int correction = 0; // 0 = no correction ; +1 = right ; -1 = left
+int correction = 0; // 0 = no correction ; +x = right ; -x = left
 
 void setup() {
   // Serial setup //
@@ -282,13 +282,13 @@ void loop() {
               digitalWrite(RELAIS_1, HIGH);
               break;
             case 7:
-              correction--;
+              motor.forward(1);
+              delay(200);
+              motor.brake();
               break;
             case 8:
-              correction = 0;
               break;
             case 9:
-              correction++;
               break;
             case 10:
               digitalWrite(SERVO_4, HIGH);
